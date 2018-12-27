@@ -1,0 +1,63 @@
+﻿@helper ProcessToastrs()
+{
+    List<(DateTime Date, string SessionId, WebApplication28.Toastr Toastr)> toastrs = WebApplication28.ToastrService.ReadAndRemoveUserQueue();
+
+    if (toastrs != null && toastrs.Count > 0)
+    {
+        foreach (var item in toastrs)
+        {
+            @ShowToastr(item.Toastr)
+        }
+    }
+}
+
+@helper ShowToastr(WebApplication28.Toastr item)
+{
+
+    switch (item.Type)
+    {
+        case WebApplication28.ToastrType.Info:
+            @ToastrInfo(item.Message, item.Title)
+            break;
+        case WebApplication28.ToastrType.Success:
+            @ToastrSuccess(item.Message, item.Title)
+            break;
+        case WebApplication28.ToastrType.Warning:
+            @ToastrWarning(item.Message, item.Title)
+            break;
+        case WebApplication28.ToastrType.Error:
+            @ToastrError(item.Message, item.Title)
+            break;
+        default:
+            @ToastrInfo(item.Message, item.Title)
+            break;
+    }
+}
+
+@helper ToastrInfo(string message, string title)
+{
+    <script>
+        toastr.info('@message', '@title');
+    </script>
+}
+
+@helper ToastrWarning(string message, string title)
+{
+    <script>
+        toastr.warning('@message', '@title');
+    </script>
+}
+
+@helper ToastrSuccess(string message, string title)
+{
+    <script>
+        toastr.success('@message', '@title');
+    </script>
+}
+
+@helper ToastrError(string message, string title)
+{
+    <script>
+        toastr.error('@message', '@title');
+    </script>
+}
